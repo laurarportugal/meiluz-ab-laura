@@ -563,6 +563,144 @@ def registrar_planilha(caminho_csv, meta, variantes, invalidas, decisao):
         w.writerow(linha)
 
 
+def gerar_dashboard_html(caminho_csv, caminho_html):  # noqa
+    linhas = []
+    if os.path.exists(caminho_csv):
+        with open(caminho_csv, "r", encoding="utf-8", newline="") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                linhas.append(row)
+
+    def badge_decisao(d):
+        if "INCONCLUSIVO" in d:
+            return f'<span class="badge inconclusivo">{d}</span>'
+        return f'<span class="badge escalar">{d}</span>'
+
+    def badge_ressalva(r):
+        if "CRITICO" in r:
+            return f'<span class="badge critico">{r}</span>'
+        if r == "Sem ressalvas relevantes":
+            return f'<span class="badge ok">✔ Sem ressalvas</span>'
+        return f'<span class="badge atencao">{r}</span>'
+
+    rows_html = ""
+    for l in linhas:
+        rows_html += f"""
+        <tr>
+            <td class="nowrap">{l.get('data_analise','')}</td>
+            <td class="nowrap"><strong>{l.get('nome_teste','')}</strong></td>
+            <td class="nowrap">{l.get('parceiro','')}</td>
+            <td class="nowrap">{l.get('periodo','')}</td>
+            <td class="nowrap" style="text-align:center">{l.get('n_variantes','')}</td>
+            <td class="wrap">{l.get('resultado','')}</td>
+            <td class="nowrap">{badge_decisao(l.get('decisao',''))}</td>
+            <td class="nowrap" style="text-align:center">{l.get('significancia_p','—')}</td>
+            <td class="ressalva">{badge_ressalva(l.get('ressalvas',''))}</td>
+        </tr>"""
+
+    total = len(linhas)
+    conclusivos = sum(1 for l in linhas if "INCONCLUSIVO" not in l.get("decisao", ""))
+    inconclusivos = total - conclusivos
+
+    cards_html = ""
+    for l in linhas:
+        decisao_txt = l.get('decisao', '')
+        ressalva_txt = l.get('ressalvas', '')
+        if "INCONCLUSIVO" in decisao_txt:
+            dec_color = "#b45309"
+            dec_bg = "#fef9c3"
+        else:
+            dec_color = "#16a34a"
+            dec_bg = "#dcfce7"
+        if "CRITICO" in ressalva_txt:
+            res_color = "#dc2626"
+            res_bg = "#fee2e2"
+        elif ressalva_txt == "Sem ressalvas relevantes":
+            res_color = "#16a34a"
+            res_bg = "#dcfce7"
+            ressalva_txt = "✔ Sem ressalvas"
+        else:
+            res_color = "#d97706"
+            res_bg = "#fef3c7"
+
+        cards_html += f"""
+        <div class="test-card">
+          <div class="test-header">
+            <span class="test-nome">{l.get('nome_teste','')}</span>
+            <span class="test-data">{l.get('data_analise','')}</span>
+          </div>
+          <div class="test-body">
+            <div class="test-row"><span class="lbl">Parceiro</span><span>{l.get('parceiro','')}</span></div>
+            <div class="test-row"><span class="lbl">Período</span><span>{l.get('periodo','')}</span></div>
+            <div class="test-row"><span class="lbl">Variantes</span><span>{l.get('n_variantes','')}</span></div>
+            <div class="test-row"><span class="lbl">P-valor</span><span>{l.get('significancia_p','—') or '—'}</span></div>
+            <div class="test-row"><span class="lbl">Resultado</span><span>{l.get('resultado','')}</span></div>
+            <div class="test-row"><span class="lbl">Decisão</span>
+              <span class="badge" style="background:{dec_bg};color:{dec_color}">{decisao_txt}</span>
+            </div>
+            <div class="test-row"><span class="lbl">Ressalvas</span>
+              <span class="badge" style="background:{res_bg};color:{res_color}">{ressalva_txt}</span>
+            </div>
+          </div>
+        </div>"""
+
+    html = f"""<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard de Testes A/B — Meliuz</title>
+<style>
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #222; }}
+  header {{ background: #1a1a2e; color: white; padding: 24px 40px; }}
+  header h1 {{ font-size: 22px; font-weight: 700; }}
+  header p {{ font-size: 13px; color: #aaa; margin-top: 4px; }}
+  .container {{ max-width: 1200px; margin: 0 auto; padding: 32px 24px; }}
+  .summary {{ display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; }}
+  .summary-card {{ background: white; border-radius: 12px; padding: 20px 28px; flex: 1; min-width: 140px;
+                   box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-top: 4px solid #6c63ff; }}
+  .summary-card .num {{ font-size: 36px; font-weight: 800; color: #6c63ff; }}
+  .summary-card .lbl {{ font-size: 13px; color: #666; margin-top: 4px; }}
+  .summary-card.verde {{ border-top-color: #22c55e; }} .summary-card.verde .num {{ color: #22c55e; }}
+  .summary-card.amarelo {{ border-top-color: #f59e0b; }} .summary-card.amarelo .num {{ color: #f59e0b; }}
+  h2 {{ font-size: 16px; color: #333; margin-bottom: 16px; }}
+  .grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }}
+  .test-card {{ background: white; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }}
+  .test-header {{ background: #1a1a2e; color: white; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }}
+  .test-nome {{ font-weight: 700; font-size: 14px; }}
+  .test-data {{ font-size: 11px; color: #aaa; }}
+  .test-body {{ padding: 14px 18px; }}
+  .test-row {{ display: flex; justify-content: space-between; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; gap: 12px; }}
+  .test-row:last-child {{ border-bottom: none; }}
+  .test-row .lbl {{ color: #888; font-size: 11px; white-space: nowrap; padding-top: 2px; }}
+  .test-row span:last-child {{ text-align: right; }}
+  .badge {{ display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }}
+  footer {{ text-align: center; padding: 24px; color: #999; font-size: 12px; }}
+</style>
+</head>
+<body>
+<header>
+  <h1>Dashboard de Testes A/B de Cashback</h1>
+  <p>Meliuz · Time de Growth · Gerado automaticamente por analisar_teste.py</p>
+</header>
+<div class="container">
+  <div class="summary">
+    <div class="summary-card"><div class="num">{total}</div><div class="lbl">Testes analisados</div></div>
+    <div class="summary-card verde"><div class="num">{conclusivos}</div><div class="lbl">Decisoes conclusivas</div></div>
+    <div class="summary-card amarelo"><div class="num">{inconclusivos}</div><div class="lbl">Inconclusivos</div></div>
+  </div>
+  <h2>Historico de testes</h2>
+  <div class="grid">{cards_html}</div>
+</div>
+<footer>Gerado em {date.today().isoformat()} · analisar_teste.py</footer>
+</body>
+</html>"""
+
+    with open(caminho_html, "w", encoding="utf-8") as f:
+        f.write(html)
+
+
 def main():
     ap = argparse.ArgumentParser(description="Analisa um teste A/B de cashback.")
     ap.add_argument("dataset", help="Caminho do CSV do teste A/B.")
@@ -607,10 +745,14 @@ def main():
 
     registrar_planilha(args.planilha, meta, variantes, invalidas, decisao)
 
+    caminho_html = "dashboard.html"
+    gerar_dashboard_html(args.planilha, caminho_html)
+
     print(relatorio)
     print("\n" + "=" * 70)
     print(f"Relatorio salvo em:  {caminho_rel}")
     print(f"Planilha atualizada: {args.planilha}")
+    print(f"Dashboard gerado:    {caminho_html}")
     print("=" * 70)
 
 
