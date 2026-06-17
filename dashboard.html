@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard de Testes A/B — Meliuz</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; color: #222; }
+  header { background: #1a1a2e; color: white; padding: 24px 40px; }
+  header h1 { font-size: 22px; font-weight: 700; }
+  header p { font-size: 13px; color: #aaa; margin-top: 4px; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+  .summary { display: flex; gap: 16px; margin-bottom: 32px; flex-wrap: wrap; }
+  .summary-card { background: white; border-radius: 12px; padding: 20px 28px; flex: 1; min-width: 140px;
+                   box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-top: 4px solid #6c63ff; }
+  .summary-card .num { font-size: 36px; font-weight: 800; color: #6c63ff; }
+  .summary-card .lbl { font-size: 13px; color: #666; margin-top: 4px; }
+  .summary-card.verde { border-top-color: #22c55e; } .summary-card.verde .num { color: #22c55e; }
+  .summary-card.amarelo { border-top-color: #f59e0b; } .summary-card.amarelo .num { color: #f59e0b; }
+  h2 { font-size: 16px; color: #333; margin-bottom: 16px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+  .test-card { background: white; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }
+  .test-header { background: #1a1a2e; color: white; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; }
+  .test-nome { font-weight: 700; font-size: 14px; }
+  .test-data { font-size: 11px; color: #aaa; }
+  .test-body { padding: 14px 18px; }
+  .test-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; gap: 12px; }
+  .test-row:last-child { border-bottom: none; }
+  .test-row .lbl { color: #888; font-size: 11px; white-space: nowrap; padding-top: 2px; }
+  .test-row span:last-child { text-align: right; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  footer { text-align: center; padding: 24px; color: #999; font-size: 12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Dashboard de Testes A/B de Cashback</h1>
+  <p>Meliuz · Time de Growth · Gerado automaticamente por analisar_teste.py</p>
+</header>
+<div class="container">
+  <div class="summary">
+    <div class="summary-card"><div class="num">3</div><div class="lbl">Testes analisados</div></div>
+    <div class="summary-card verde"><div class="num">2</div><div class="lbl">Decisoes conclusivas</div></div>
+    <div class="summary-card amarelo"><div class="num">1</div><div class="lbl">Inconclusivos</div></div>
+  </div>
+  <h2>Historico de testes</h2>
+  <div class="grid">
+        <div class="test-card">
+          <div class="test-header">
+            <span class="test-nome">Cashback Parceiro A</span>
+            <span class="test-data">2026-06-17</span>
+          </div>
+          <div class="test-body">
+            <div class="test-row"><span class="lbl">Parceiro</span><span>Parceiro A</span></div>
+            <div class="test-row"><span class="lbl">Período</span><span>2011-01-01 a 2011-04-02</span></div>
+            <div class="test-row"><span class="lbl">Variantes</span><span>3</span></div>
+            <div class="test-row"><span class="lbl">P-valor</span><span>0.0000</span></div>
+            <div class="test-row"><span class="lbl">Resultado</span><span>Vencedora Grupo 1: margem liq. R$ 404.711 vs Grupo 2 R$ 357.519</span></div>
+            <div class="test-row"><span class="lbl">Decisão</span>
+              <span class="badge" style="background:#dcfce7;color:#16a34a">Escalar Grupo 1 para 100%</span>
+            </div>
+            <div class="test-row"><span class="lbl">Ressalvas</span>
+              <span class="badge" style="background:#dcfce7;color:#16a34a">✔ Sem ressalvas</span>
+            </div>
+          </div>
+        </div>
+        <div class="test-card">
+          <div class="test-header">
+            <span class="test-nome">Cashback Parceiro B</span>
+            <span class="test-data">2026-06-17</span>
+          </div>
+          <div class="test-body">
+            <div class="test-row"><span class="lbl">Parceiro</span><span>Parceiro B</span></div>
+            <div class="test-row"><span class="lbl">Período</span><span>2011-05-01 a 2011-06-30</span></div>
+            <div class="test-row"><span class="lbl">Variantes</span><span>3</span></div>
+            <div class="test-row"><span class="lbl">P-valor</span><span>0.0000</span></div>
+            <div class="test-row"><span class="lbl">Resultado</span><span>Vencedora Grupo 1: margem liq. R$ 286.570 vs Grupo 2 R$ 143.157</span></div>
+            <div class="test-row"><span class="lbl">Decisão</span>
+              <span class="badge" style="background:#dcfce7;color:#16a34a">Escalar Grupo 1 para 100%</span>
+            </div>
+            <div class="test-row"><span class="lbl">Ressalvas</span>
+              <span class="badge" style="background:#dcfce7;color:#16a34a">✔ Sem ressalvas</span>
+            </div>
+          </div>
+        </div>
+        <div class="test-card">
+          <div class="test-header">
+            <span class="test-nome">Cashback Parceiro C</span>
+            <span class="test-data">2026-06-17</span>
+          </div>
+          <div class="test-body">
+            <div class="test-row"><span class="lbl">Parceiro</span><span>Parceiro C</span></div>
+            <div class="test-row"><span class="lbl">Período</span><span>2011-07-01 a 2011-08-14</span></div>
+            <div class="test-row"><span class="lbl">Variantes</span><span>2</span></div>
+            <div class="test-row"><span class="lbl">P-valor</span><span>—</span></div>
+            <div class="test-row"><span class="lbl">Resultado</span><span>Vencedora Grupo 1: margem liq. R$ 34.769</span></div>
+            <div class="test-row"><span class="lbl">Decisão</span>
+              <span class="badge" style="background:#fef9c3;color:#b45309">INCONCLUSIVO — Escalar Grupo 1 para 100%</span>
+            </div>
+            <div class="test-row"><span class="lbl">Ressalvas</span>
+              <span class="badge" style="background:#fee2e2;color:#dc2626">[CRITICO] Grupo 2: cashback == comissao em 45/45 dias (margem zero). Suspeita de dado corrompido. Variante EXCLUIDA da decisao.</span>
+            </div>
+          </div>
+        </div></div>
+</div>
+<footer>Gerado em 2026-06-17 · analisar_teste.py</footer>
+</body>
+</html>

@@ -4,7 +4,7 @@
 - **Periodo:** 2011-05-01 a 2011-06-30 (61 dias)
 - **Variantes:** 3
 - **Metrica de decisao:** Margem liquida (comissao - cashback)
-- **Gerado em:** 2026-06-16
+- **Gerado em:** 2026-06-17
 
 ## Recomendacao
 
@@ -40,4 +40,4 @@ Margem liquida +100.2% vs vice (Grupo 2).
 - [INFO] Grupo 3: 2 dia(s) com pico de compradores >4 desvios.
 
 ---
-*Relatorio gerado automaticamente por `analisar_teste.py` em 2026-06-16.*
+*Relatorio gerado automaticamente por `analisar_teste.py` em 2026-06-17.*

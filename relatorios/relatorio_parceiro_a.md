@@ -4,7 +4,7 @@
 - **Periodo:** 2011-01-01 a 2011-04-02 (92 dias)
 - **Variantes:** 3
 - **Metrica de decisao:** Margem liquida (comissao - cashback)
-- **Gerado em:** 2026-06-16
+- **Gerado em:** 2026-06-17
 
 ## Recomendacao
 
@@ -38,4 +38,4 @@ Margem liquida +13.2% vs vice (Grupo 2).
 - Nenhum problema relevante detectado.
 
 ---
-*Relatorio gerado automaticamente por `analisar_teste.py` em 2026-06-16.*
+*Relatorio gerado automaticamente por `analisar_teste.py` em 2026-06-17.*

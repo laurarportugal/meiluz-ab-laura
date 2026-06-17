@@ -4,7 +4,7 @@
 - **Periodo:** 2011-07-01 a 2011-08-14 (45 dias)
 - **Variantes:** 2
 - **Metrica de decisao:** Margem liquida (comissao - cashback)
-- **Gerado em:** 2026-06-16
+- **Gerado em:** 2026-06-17
 
 ## Recomendacao
 
@@ -35,4 +35,4 @@ Apenas 1 variante valida — sem comparativo A/B confiavel. Recomendacao proviso
 - [INFO] Teste com 2 variantes (A/B simples).
 
 ---
-*Relatorio gerado automaticamente por `analisar_teste.py` em 2026-06-16.*
+*Relatorio gerado automaticamente por `analisar_teste.py` em 2026-06-17.*
