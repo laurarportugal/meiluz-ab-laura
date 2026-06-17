@@ -68,3 +68,9 @@ O agente roda o script, lê o relatório e explica a decisão.
 - **Agregação por variante:** compradores, GMV, comissão, cashback, margem e métricas normalizadas
 - **Checagens de qualidade:** cashback == comissão, margem negativa, amostra curta, outliers, coleta truncada
 - **Significância estatística:** teste t pareado por dia (implementado sem numpy/scipy). p < 0,05 → recomendação firme; senão → INCONCLUSIVO
+
+## Planilha de acompanhamento
+
+Todos os testes analisados são registrados automaticamente na planilha abaixo:
+
+[Acessar planilha no Google Sheets](https://docs.google.com/spreadsheets/d/19J5f9JT4ChXDiyb1Lq2yuSGgAS0ZhdRupl30AmRl1SA/edit?usp=sharing)
